@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動物流量煉金術 - SYSTEM AUDIT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2 family=Space+Mono&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-yellow: #ffcc00; /* 簡約核心黃 */
+            --dark-bg: #000000;      /* 純黑背景 */
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Space Mono', 'Noto Sans TC', monospace;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            background: #000;
+            border: 2px solid var(--brand-yellow);
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        /* 進入封面樣式 */
+        .cover-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .cover-subtitle {
+            color: var(--brand-yellow);
+            font-size: 14px;
+            letter-spacing: 6px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 60px 0;
+            letter-spacing: 2px;
+        }
+
+        .start-btn {
+            background: transparent;
+            border: 2px solid var(--brand-yellow);
+            color: var(--brand-yellow);
+            padding: 20px 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            letter-spacing: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background: var(--brand-yellow);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+        }
+
+        /* 主遊戲面板樣式 */
+        .projection-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .panel-header {
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+        }
+
+        .panel-status {
+            color: var(--brand-yellow);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .panel-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 5px 0 0 0;
+        }
+
+        .display-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .question-text {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #fff;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--brand-yellow);
+            padding-left: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .opt-btn {
+            background: #0a0a0f;
+            border: 1px solid #222;
+            padding: 22px 25px;
+            color: #ccc;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            line-height: 1.5;
+        }
+
+        .opt-btn:hover {
+            background: var(--brand-yellow);
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+            font-weight: 700;
+        }
+
+        /* 結算畫面設計 */
+        .result-screen {
+            display: none;
+        }
+
+        .verdict-title {
+            font-size: 42px;
+            color: var(--brand-yellow);
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .verdict-desc {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #aaa;
+            text-align: left;
+            background: #0c0c12;
+            padding: 25px;
+            border-radius: 4px;
+            border: 1px solid #222;
+        }
+
+        .progress-container {
+            height: 2px;
+            background: #111;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--brand-yellow);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .footer-stream {
+            font-size: 10px;
+            color: #333;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="system-container">
+    
+    <div id="cover-view" class="cover-screen">
+        <div class="cover-subtitle">LECTURE PERFORMANCE // INTERACTIVE PANEL</div>
+        <h1 class="cover-title">賽博動物園：網路角色與慾望審計</h1>
+        <button class="start-btn" onclick="startGame()">[ 點擊初始化系統 ]</button>
+    </div>
+
+    <div class="projection-panel" id="main-panel" style="display: none;">
+        <div class="panel-header">
+            <div class="panel-status" id="panel-stage">ACT I // THE LECTURE</div>
+            <div class="panel-title" id="panel-main-title">動物流量煉金術：實戰演練</div>
+            <div class="progress-container"><div class="progress-bar" id="p-bar"></div></div>
+        </div>
+
+        <div class="display-content" id="display-area">
+            </div>
+
+        <div class="footer-stream">DATA STREAM ACTIVE // NO LIABILITIES ASSUMED</div>
+    </div>
+
+</div>
+
+<script>
+    const gameData = [
+        {
+            stage: "ACT II // GAME STAGE 01",
+            q: "1. 網路上瘋傳一支『海獺極度熟練地用兩隻前爪將冰塊塞進身體口袋、並瘋狂拍打臉頰』的可愛短片。你的第一直覺是？",
+            options: [
+                { text: "A. 萌化了！天哪牠在拍拍臉！立刻重播三次並轉發給朋友。", type: "FUEL" },
+                { text: "B. 點進評論區確認：『海獺有口袋？』開始搜尋海獺的生理構造百科。", type: "AUDITOR" },
+                { text: "C. 產生莫名焦慮：『連海獺都有自己的口袋和收納邏輯，我卻連房間都整理不好』。", type: "PROJECTOR" },
+                { text: "D. 思考這個影片的播放量，以及如果把海獺換成水豚，點閱率會上升多少 %。", type: "TROLL" }
+            ]
+        },
+        {
+            stage: "ACT II // GAME STAGE 02",
+            q: "2. 下午三點，你滑到一隻「貓咪因為主人偷吃牠的罐頭，眼神充滿極度鄙視、一掌把主人的咖啡杯推落桌子砸碎」的短片。你為什麼會停留？",
+            options: [
+                { text: "A. 哈哈哈哈好爽！主人活該，這貓的脾氣太對我胃口了！", type: "TROLL" },
+                { text: "B. 產生強烈共鳴。你在內心大喊：『我也好想一巴掌把主管的電腦推到地上！』", type: "PROJECTOR" },
+                { text: "C. 單純覺得貓咪動作敏捷，並擔心咖啡有沒有燙到貓的腳。", type: "FUEL" },
+                { text: "D. 暗自慶幸：『還好這不是我的貓，我的生活雖然爛，但至少我的杯子還在』。", type: "AUDITOR" }
+            ]
+        },
+        {
+            stage: "ACT II // GAME STAGE 03",
+            q: "3. 一支慢速直播中，一隻樹懶花了整整 45 分鐘，才極度緩慢地從馬路這一頭爬到另一頭。此時你的行為是？",
+            options: [
+                { text: "A. 瘋狂拉動進度條快轉，或者在評論區刷：『搞快點！要遲到了！』", type: "TROLL" },
+                { text: "B. 耐心看完了。覺得心靈被強行治癒，反思自己是不是平時活得太浮躁。", type: "FUEL" },
+                { text: "C. 開始研究直播間的在線人數，以及彈幕刷屏的頻率與網速的關係。", type: "AUDITOR" },
+                { text: "D. 覺得這隻樹懶就像在體制內無效加班、動彈不得的自己，流下了痛苦的眼牢。", type: "PROJECTOR" }
+            ]
+        },
+        {
+            stage: "ACT III // THE TRANSITION",
+            q: "4. 【終極盲測】如果演算法告訴你，下一支動物短片只要點讚破億，就能改寫一隻注定要被安樂死的網紅動物的命運，你會？",
+            options: [
+                { text: "A. 毫不猶豫點讚轉發，順便為自己的善良感動三秒鐘。", type: "FUEL" },
+                { text: "B. 關掉螢幕。拒絕被這種情感勒索的機制綁架，直面自己無能為力的現實。", type: "AUDITOR" },
+                { text: "C. 瘋狂留言引戰，痛斥體制的殘酷，讓這個話題衝上熱搜第一名。", type: "TROLL" },
+                { text: "D. 默默看著，在心裡為牠舉辦一場賽博葬禮，然後繼續內耗。", type: "PROJECTOR" }
+            ]
+        }
+    ];
+
+    const finalResults = {
+        FUEL: {
+            title: "【 賽博情感燃料 】",
+            desc: "審計報告：你是演算法最喜歡的「優質韭菜」。你擁有過剩的同理心，在現實中無處安放，於是只能在網絡上為章魚、為海獺流淚。你用點讚來完成道德洗錢，用動物的萌態來為自己白天的無能進行插管急救。教學結束，今天的回家作業是：下次點讚時，問問自己，你分享的是動物，還是你不敢承認的寂寞？下課。"
+        },
+        AUDITOR: {
+            title: "【 偷窺式的優越掠食者 】",
+            desc: "審計報告：你冷靜、理智，甚至有點自私。你觀看動物，本質上是在進行一場安全、無痛的「生活比對」。你透過看別人生活的混亂來確認自己生活的安全。你以為你逃過了演算法，但你的冷漠本身，就是我們計算社會冷感指數時，最精準的底層數據。下課。"
+        },
+        PROJECTOR: {
+            title: "【 精神內耗的肉身投影客 】",
+            desc: "審計報告：你過得很憋屈，對吧？你不敢砸碎辦公室的杯子，所以你著迷於拆家的二哈、憤怒的貓咪。你在網絡上封的神，只是你投射出去、在現實中被打碎的正義感與被閹割的勇氣。那隻瘋狂的動物，就是你在網絡上的賽博替身.下課。"
+        },
+        TROLL: {
+            title: "【 虛無主義的流量巨怪 】",
+            desc: "審計報告：你深刻明白網絡的虛無，於是你選擇成為混亂的一部分。動物在你眼裡只是像素塊、是娛樂密碼。你追求極致的快感與集體狂歡，你是演算法暴走時最推波助瀾的狂風。但別忘了，當你以為你在凝視深淵並嘲笑深淵時，你身上的每一條網路痕跡，早就被我們打包證券化，賣給了下一個首富。下課。"
+        }
+    };
+
+    let step = -1; 
+    let userStats = { FUEL: 0, AUDITOR: 0, PROJECTOR: 0, TROLL: 0 };
+
+    function startGame() {
+        document.getElementById("cover-view").style.display = "none";
+        document.getElementById("main-panel").style.display = "flex";
+        nextStep();
+    }
+
+    function nextStep() {
+        step++;
+        const display = document.getElementById("display-area");
+        
+        if (step < gameData.length) {
+            const data = gameData[step];
+            document.getElementById("panel-stage").innerText = data.stage;
+            document.getElementById("panel-main-title").innerText = "流量煉金術：活體數據採集";
+            document.getElementById("p-bar").style.width = ((step + 1) / gameData.length) * 100 + "%";
+
+            display.innerHTML = `
+                <div class="question-text">${data.q}</div>
+                <div class="options-grid">
+                    ${data.options.map((o, idx) => `
+                        <button class="opt-btn" onclick="recordVote('${o.type}')">${o.text}</button>
+                    `).join('')}
+                </div>
+            `;
+        } else {
+            // 終極清算畫面
+            document.getElementById("panel-stage").innerText = "ACT IV // TOTAL AUDIT";
+            document.getElementById("panel-main-title").innerText = "全網結構審計報告";
+            
+            let maxType = "FUEL";
+            let maxScore = -1;
+            for(let k in userStats) {
+                if(userStats[k] > maxScore) { maxScore = userStats[k]; maxType = k; }
+            }
+
+            const result = finalResults[maxType];
+            display.innerHTML = `
+                <div class="result-screen" style="display:block;">
+                    <div class="verdict-title">${result.title}</div>
+                    <div class="verdict-desc">${result.desc}</div>
+                </div>
+            `;
+        }
+    }
+
+    function recordVote(type) {
+        userStats[type]++;
+        nextStep();
+    }
+</script>
+
+</body>
+</html>
